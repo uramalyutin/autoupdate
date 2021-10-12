@@ -27,19 +27,8 @@ class OneC:
                 print(f'Рабочий процесс {working_process.HostName + ":" + str(working_process.MainPort)}')
 
 def main():
-    """
-    TODO: подключение к рабочим процессам нужно перенести в отдельную функцию
-    """
     com_connector = ComConnector()
     onec = OneC(com_connector)
-
-    # for cluster in clusters:
-    #     agent.Authenticate(cluster, "", "")
-    #     working_processes = get_working_processes(agent, cluster)
-    #
-    #     for working_process in working_processes:
-    #         connect_string = working_process.HostName + ":" + str(working_process.MainPort)
-    #         print('     ' + connect_string)
 
 
 if __name__ == "__main__":
