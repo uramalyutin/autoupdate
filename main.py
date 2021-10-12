@@ -2,56 +2,44 @@
 import win32com.client as win32
 
 
-def create_com_connector():
-    _com_connector = win32.Dispatch("V83.COMConnector")
-    if _com_connector is not None:
-        print("Создали COM-объект...")
-        return _com_connector
-    else:
-        print("Возникли проблемы при создании COM-объекта...")
+class ComConnector:
+
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = win32.Dispatch("V83.COMConnector")
+        return cls._instance
 
 
-def connect_agent(_com_connector):
-    _agent = _com_connector.ConnectAgent("77dln-s-a01.1plt.ru:1540")
-    if _agent is not None:
-        print("Подключились к агенту...")
-        return _agent
-    else:
-        print("Возникли проблемы при подключении к агенту...")
-
-
-def get_clusters(_agent):
-    _clusters = _agent.getclusters()
-    if _clusters is not None:
-        print("Получили список кластеров...")
-        return _clusters
-    else:
-        print("Возникли проблемы при получении списка кластеров...")
-
-
-def get_working_processes(_agent, _cluster):
-    _working_processes = _agent.GetWorkingProcesses(_cluster)
-    if _working_processes is not None:
-        print("Получили рабочие процессы...")
-        return _working_processes
-    else:
-        print("Возникли проблемы при получении рабочих процессов...")
-
+class OneC:
+    def __init__(self, comConnector):
+        self.comConnector = comConnector
+        self.agent = self.comConnector.ConnectAgent("77dln-s-a01.1plt.ru:1540")
+        self.clusters = self.agent.getclusters()
+        print(f'COM-объект - {self.comConnector}')
+        print(f'Агент - {self.agent}')
+        for cluster in self.clusters:
+            print(f'Кластер - {cluster}')
+            self.agent.Authenticate(cluster, "", "")
+            self.working_processes = self.agent.GetWorkingProcesses(cluster)
+            for working_process in self.working_processes:
+                print(f'Рабочий процесс {working_process.HostName + ":" + str(working_process.MainPort)}')
 
 def main():
     """
     TODO: подключение к рабочим процессам нужно перенести в отдельную функцию
     """
-    com_connector = create_com_connector()
-    agent = connect_agent(com_connector)
-    clusters = get_clusters(agent)
-    for cluster in clusters:
-        agent.Authenticate(cluster, "", "")
-        working_processes = get_working_processes(agent, cluster)
+    com_connector = ComConnector()
+    onec = OneC(com_connector)
 
-        for working_process in working_processes:
-            connect_string = working_process.HostName + ":" + str(working_process.MainPort)
-            print('     ' + connect_string)
+    # for cluster in clusters:
+    #     agent.Authenticate(cluster, "", "")
+    #     working_processes = get_working_processes(agent, cluster)
+    #
+    #     for working_process in working_processes:
+    #         connect_string = working_process.HostName + ":" + str(working_process.MainPort)
+    #         print('     ' + connect_string)
 
 
 if __name__ == "__main__":
