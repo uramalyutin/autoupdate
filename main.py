@@ -1,8 +1,5 @@
-import sys
-import win32com.client as win32
 
-from au_mainForm import Ui_MainWindow
-from PyQt5 import QtWidgets
+import win32com.client as win32
 
 
 def create_com_connector():
@@ -41,14 +38,10 @@ def get_working_processes(_agent, _cluster):
         print("Возникли проблемы при получении рабочих процессов...")
 
 
-class MainWindow(QtWidgets.QMainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-
 def main():
+    """
+    TODO: подключение к рабочим процессам нужно перенести в отдельную функцию
+    """
     com_connector = create_com_connector()
     agent = connect_agent(com_connector)
     clusters = get_clusters(agent)
@@ -59,12 +52,6 @@ def main():
         for working_process in working_processes:
             connect_string = working_process.HostName + ":" + str(working_process.MainPort)
             print('     ' + connect_string)
-
-    app = QtWidgets.QApplication([])
-    application = MainWindow()
-    application.show()
-
-    sys.exit(app.exec())
 
 
 if __name__ == "__main__":
