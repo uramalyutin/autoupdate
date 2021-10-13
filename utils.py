@@ -9,21 +9,24 @@ class ComConnector:
     def __new__(cls):
         if cls._instance is None:
             cls._instance = win32.Dispatch("V83.COMConnector")
+            print(f'Создали COM-объект - {cls._instance}')
         return cls._instance
 
 
 class OneC:
     def __init__(self, comConnector, agent):
+
         self.agent = comConnector.ConnectAgent(agent)
+        print(f'Подключились к агенту - {self.agent.ConnectionString}')
+
         self.clusters = self.agent.getclusters()
-        print(f'COM-объект - {comConnector}')
-        print(f'Агент - {self.agent}')
         for cluster in self.clusters:
-            print(f'Кластер - {cluster}')
+            print(f'Получили кластер - {cluster.HostName}:{cluster.MainPort}')
             self.agent.Authenticate(cluster, "", "")
             self.workingProcesses = self.agent.GetWorkingProcesses(cluster)
+            print(f'Получили рабочие процессы:')
             for workingProcess in self.workingProcesses:
-                print(f'Рабочий процесс {workingProcess.HostName + ":" + str(workingProcess.MainPort)}')
+                print(f'    {workingProcess.HostName + ":" + str(workingProcess.MainPort)}')
 
 
 def main():
