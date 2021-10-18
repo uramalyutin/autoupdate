@@ -15,6 +15,7 @@ class ComConnector:
 
 class OneC:
     connector = None
+
     def __init__(self, comConnector, server):
         if OneC.connector == None:
             OneC.connector = comConnector
@@ -30,12 +31,6 @@ class OneC:
             print(f'Получили рабочие процессы кластера:')
             for workingProcess in self.__workingProcesses:
                 print(f'    {workingProcess.HostName + ":" + str(workingProcess.MainPort)}')
-
-    def getClusters(self):
-        return self.__agent.getclusters()
-
-    def getWorkingProcess(self):
-        return self.__workingProcesses
 
     def getIB(self):
         for cluster in self.__clusters:
