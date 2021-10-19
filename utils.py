@@ -15,7 +15,6 @@ class ComConnector:
 
 class OneC:
     connector = None
-
     def __init__(self, comConnector, server):
         if OneC.connector == None:
             OneC.connector = comConnector
