@@ -18,23 +18,25 @@ class OneC:
     def __init__(self, comConnector, server):
         if OneC.connector == None:
             OneC.connector = comConnector
-        self.__agent = OneC.connector.ConnectAgent(server)
-        print(f'Подключились к агенту - {self.__agent.ConnectionString}')
+        self.agent = OneC.connector.ConnectAgent(server)
+        print(f'Подключились к агенту - {self.agent.ConnectionString}')
 
-        self.__clusters = self.__agent.getclusters()
-        for cluster in self.__clusters:
+        self.clusters = self.agent.getclusters()
+        for cluster in self.clusters:
             print(f'Получили кластер - {cluster.HostName}:{cluster.MainPort}')
             # Если в кластере есть Администраторы кластера, нужно передавать логин и пароль для авторизации
-            self.__agent.Authenticate(cluster, "", "")
-            self.__workingProcesses = self.__agent.GetWorkingProcesses(cluster)
+            self.agent.Authenticate(cluster, "", "")
+            self.workingProcesses = self.agent.GetWorkingProcesses(cluster)
             print(f'Получили рабочие процессы кластера:')
-            for workingProcess in self.__workingProcesses:
+            for workingProcess in self.workingProcesses:
                 print(f'    {workingProcess.HostName + ":" + str(workingProcess.MainPort)}')
 
+
     def getIB(self):
-        for cluster in self.__clusters:
-            infoBases = self.__agent.getInfoBases(cluster)
+        for cluster in self.clusters:
+            infoBases = self.agent.getInfoBases(cluster)
         return infoBases
+
 
 def main():
     com_connector = ComConnector()

@@ -6,8 +6,7 @@
   "rep_user_pwd": "",
   "infobases": [
     {
-      "server_name": "77dln-s-a01.1plt.ru",
-      "server_port": "1540",
+      "server_name_port": "77dln-s-a01.1plt.ru:1540",
       "db_name": "tester",
       "user_name": "UpdateUser",
       "user_pwd": "Update1Update",
