@@ -110,16 +110,11 @@ class OneC_Cluster:
                 logger.exception(f'В процессе получения информационных баз на кластере произошла ошибка')        
         return self.infoBases
 
+    def getInfoBase(self):
+        pass
 
 def main():
-    com_connector = ComConnector()
-    onec = OneC_Cluster(com_connector, "a00-77dln-a30.1plt.ru:1540", "Yurij.Malyutin", "pass")
-    onec_agent = onec.getAgent()
-    onec_clusters = onec.getClusters()
-    onec_workCluster = onec.getClusterWithPort("1541")
-    if onec_workCluster is not None:
-        onec_workingProcesses = onec.getWorkingProcesses()
-        onec_infoBases = onec.getInfoBases()
+    pass
 
 
 logger = logging.getLogger("utils")

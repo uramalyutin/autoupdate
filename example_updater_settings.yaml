@@ -1,0 +1,6 @@
+PlatfomPath: "D:\\IT_Utils\\Portable 1C 8.3.23.2040\\bin\\"
+LockTime: "5"
+ClusterLogin: "username"
+ClusterPassword: "password"
+LoggingLevel: "INFO"
+Infobases: [ { ServerName: "servername", ServerPort: "serverport", InfoBaseName: "infobasename", InfobaseLogin: "ibusername", InfobasePassword: "ibuserpassword" } ]
