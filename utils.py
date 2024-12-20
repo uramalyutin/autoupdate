@@ -19,23 +19,23 @@ class ComConnector:
 class OneC_Cluster:
     _comConnector = None
     
-    def __init__(self, comConnector, onecServer, clusterLogin, clusterPass):
-        logger.info(f'Начало инициализации кластера {onecServer}')
+    def __init__(self, comConnector, ibsettings):
+        logger.info(f'Начало инициализации кластера {ibsettings.get('ServerName')}')
         
         #В общем случае COM-коннектор может быть только одной версии, поэтому сохраним его для всего класса
         if OneC_Cluster._comConnector is None:
             OneC_Cluster._comConnector = comConnector
-        
-        self.onecServer = onecServer
-        self.clusterLogin = clusterLogin
-        self.clusterPass = clusterPass
+
+        self.onecServer = ibsettings.get('ServerName')
+        self.clusterLogin = ibsettings.get('ClusterLogin')
+        self.clusterPass = ibsettings.get('ClusterPassword')
         self.agent = None
         self.clusters = None
         self.workCluster = None
         self.workingProcesses = None
         self.infoBases = None
  
-        logger.info(f'Завершение инициализации кластера {onecServer}')
+        logger.info(f'Завершение инициализации кластера {ibsettings.get('ServerName')}')
 
     def getAgent(self):
         if self.agent is None:
@@ -73,6 +73,7 @@ class OneC_Cluster:
                         break
             except:
                 logger.exception(f'В процессе поиска кластера с портом {port} произошла ошибка')
+            
             # Если в кластере есть Администраторы кластера, нужно авторизоваться как Администратор кластера,
             # чтобы получить рабочие процессы и информационные базы
             try:
@@ -113,27 +114,31 @@ class OneC_Cluster:
     def getInfoBase(self):
         pass
 
+
+def getLogger(loggerName, loggerMode):
+    logger = logging.getLogger(loggerName)
+    logger.setLevel(logging.INFO)
+    file_handler = logging.FileHandler(
+        filename = "updater_log.log", mode=loggerMode, encoding = 'utf-8'
+    )
+    console_handler = logging.StreamHandler()
+    file_format = logging.Formatter(
+        '%(asctime)s;%(name)s;%(levelname)s;%(message)s'
+    )
+    console_format = logging.Formatter(
+        "[%(asctime)s];%(name)s;%(levelname)s;%(message)s","%H:%M:%S"
+    )
+    file_handler.setFormatter(file_format)
+    console_handler.setFormatter(console_format)
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+    return logger
+
+
 def main():
     pass
 
 
-logger = logging.getLogger("utils")
-logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler(
-    filename = "updater_log.log", mode="w", encoding = 'utf-8'
-)
-console_handler = logging.StreamHandler()
-file_format = logging.Formatter(
-    '%(asctime)s;%(name)s;%(levelname)s;%(message)s'
-)
-console_format = logging.Formatter(
-    "[%(asctime)s];%(name)s;%(levelname)s;%(message)s","%H:%M:%S"
-)
-file_handler.setFormatter(file_format)
-console_handler.setFormatter(console_format)
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
-
-
+logger = getLogger("utils", "a")
 if __name__ == "__main__":
     main()
