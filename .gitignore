@@ -4,8 +4,7 @@
 # ---- ФАЙЛЫ ----
 # Игнорирование по типу файла, будут игнорироваться в АБСОЛЮТНО всех директориях
 # Например /files/data.zip, /server.log, /uploads/users/data/info.xls
-*.log
-*.yaml
+*
 #*.pdf
 #*.xls
 # Игнорирование файла во ВСЕХ директориях
@@ -43,6 +42,9 @@
 # Игнорирование файла с именем, содержащим спецсимволы
 # Например !readme!.txt
 #\!readme!.txt
+!*.py
+!readme.md
+!requirements.txt
 !example_updater_settings.yaml
 !.gitignore
 # Игнорирование всех JPG и JPEG файлов внутри директорий,
